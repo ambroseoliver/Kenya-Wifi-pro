@@ -1,0 +1,194 @@
+<?php
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KenyaWiFi Pro - Affordable Internet Access</title>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>KenyaWiFi Pro</h1>
+            <p>Affordable Internet Access</p>
+        </div>
+
+        <!-- Status -->
+        <div class="status">Online</div>
+
+        <!-- Navigation -->
+        <div class="nav">
+            <div class="nav-item active" onclick="switchTab('voucher', this)">Voucher</div>
+            <div class="nav-item" onclick="switchTab('login', this)">Login</div>
+            <div class="nav-item" onclick="switchTab('reconnect', this)">Reconnect</div>
+            <div class="nav-item" onclick="switchTab('admin', this)">Admin</div>
+        </div>
+
+        <!-- Voucher Tab -->
+        <div id="voucher" class="content">
+            <h2 class="section-title">WiFi Access Login</h2>
+            <p style="text-align: center; margin-bottom: 20px;">Enter your voucher code or login credentials</p>
+            
+            <div class="input-group">
+                <label>Voucher Code</label>
+                <input type="text" placeholder="Enter voucher code">
+            </div>
+            
+            <button class="btn">Connect to WiFi</button>
+            
+            <div class="divider"></div>
+            
+            <p style="text-align: center; font-size: 14px; color: #7f8c8d;">
+                Don't have a voucher? <a href="#" style="color: var(--secondary-color);">Purchase one now</a>
+            </p>
+            
+            <!-- Packages Section -->
+            <div class="packages-section">
+                <h3 class="packages-title">Available Packages</h3>
+                
+                <div class="package-grid">
+                    <div class="package-card">
+                        <div class="package-name">Hourly</div>
+                        <div class="package-price">KSH 50</div>
+                        <div class="package-duration">1 Hour Access</div>
+                        <div class="package-speed">10 Mbps</div>
+                        <button class="package-btn" onclick="openPaymentModal('Hourly', '50')">Buy Now</button>
+                    </div>
+                    
+                    <div class="package-card">
+                        <div class="package-name">Daily</div>
+                        <div class="package-price">KSH 200</div>
+                        <div class="package-duration">24 Hours Access</div>
+                        <div class="package-speed">15 Mbps</div>
+                        <button class="package-btn" onclick="openPaymentModal('Daily', '200')">Buy Now</button>
+                    </div>
+                    
+                    <div class="package-card">
+                        <div class="package-name">Weekly</div>
+                        <div class="package-price">KSH 1,000</div>
+                        <div class="package-duration">7 Days Access</div>
+                        <div class="package-speed">20 Mbps</div>
+                        <button class="package-btn" onclick="openPaymentModal('Weekly', '1000')">Buy Now</button>
+                    </div>
+                    
+                    <div class="package-card">
+                        <div class="package-name">Monthly</div>
+                        <div class="package-price">KSH 3,500</div>
+                        <div class="package-duration">30 Days Access</div>
+                        <div class="package-speed">25 Mbps</div>
+                        <button class="package-btn" onclick="openPaymentModal('Monthly', '3500')">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Tab -->
+        <div id="login" class="content hidden">
+            <h2 class="section-title">WiFi Access Login</h2>
+            <div class="input-group">
+                <label>Username</label>
+                <input type="text" placeholder="Enter username">
+            </div>
+            
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" placeholder="Enter password">
+            </div>
+            
+            <button class="btn">Connect to WiFi</button>
+            
+            <div class="divider"></div>
+            <p style="text-align: center; font-size: 14px; color: #7f8c8d;">
+                Forgot password? <a href="#" style="color: var(--secondary-color);">Reset here</a>
+            </p>
+        </div>
+
+        <!-- Reconnect Tab -->
+        <div id="reconnect" class="content hidden">
+            <h2 class="section-title">Reconnect Session</h2>
+            <div class="input-group">
+                <label>Username</label>
+                <input type="text" placeholder="Enter your username">
+            </div>
+            
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" placeholder="Enter your password">
+            </div>
+            
+            <button class="btn">Reconnect</button>
+            
+            <div class="divider"></div>
+            <p style="text-align: center; font-size: 14px; color: #7f8c8d;">
+                Having issues? <a href="#" style="color: var(--secondary-color);">Contact support</a>
+            </p>
+        </div>
+
+        <!-- Admin Tab -->
+        <div id="admin" class="content hidden">
+            <h2 class="section-title">Admin Login</h2>
+            <p style="text-align: center; margin-bottom: 20px;">Access the administrative dashboard</p>
+            <div class="input-group">
+                <label>Username</label>
+                <input type="text" placeholder="Enter admin username">
+            </div>
+            
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" placeholder="Enter admin password">
+            </div>
+            
+            <button class="btn btn-admin">Login</button>
+            <div class="divider"></div>
+            <p style="text-align: center; font-size: 14px; color: #7f8c8d;">
+                Authorized personnel only
+            </p>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">M-Pesa Payment</h3>
+                <span class="close-modal" onclick="closePaymentModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="mpesaPaymentForm" action="process_payment.php" method="POST">
+                    <input type="hidden" id="packageName" name="package_name">
+                    <input type="hidden" id="packagePrice" name="package_price">
+                    
+                    <div class="input-group">
+                        <label>Phone Number (M-Pesa)</label>
+                        <input type="tel" id="mpesaPhone" name="phone_number" placeholder="2547XXXXXXXX" required
+                               pattern="^254[17]\d{8}$" title="Enter a valid Kenyan phone number starting with 254">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Package</label>
+                        <input type="text" id="displayPackageName" readonly>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Amount (KSH)</label>
+                        <input type="text" id="displayPackagePrice" readonly>
+                    </div>
+                    
+                    <div class="spinner" id="paymentSpinner"></div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-cancel" onclick="closePaymentModal()">Cancel</button>
+                        <button type="submit" class="btn btn-package">Proceed Payment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link to JS -->
+    <script src="./js/script.js"></script>
+</body>
+</html>
