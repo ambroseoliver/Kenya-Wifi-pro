@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.style.display = "flex";
 
     // Clear previous messages
-    document.getElementById('paymentResult').innerHTML = '';
+    document.getElementById("paymentResult").innerHTML = "";
   };
 
   window.closePaymentModal = () => {
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* =========================
-     3. Form Submission Handling
+     3. Form Submission Handling (STK Push)
   ========================== */
   const mpesaForm = document.getElementById("mpesaPaymentForm");
   if (mpesaForm) {
@@ -67,38 +67,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         const formData = new FormData(mpesaForm);
-        const response = await fetch('process_payment.php', {
-          method: 'POST',
+        const response = await fetch("stk_push.php", {
+          method: "POST",
           body: formData
         });
 
         const result = await response.json();
 
         if (result.success) {
-          // Display voucher details to user
+          // Display voucher/payment success message
           const voucherHTML = `
             <div class="voucher-result success">
               <h3>Payment Successful!</h3>
-              <p>Transaction Code: ${result.transaction_code}</p>
-              <p>Voucher Code: <strong>${result.voucher_code}</strong></p>
-              <p>Expiration: ${result.expiration}</p>
-              <p>Package: ${result.package}</p>
+              <p>Transaction Code: ${result.transaction_code || "Pending"}</p>
+              <p>Voucher Code: <strong>${result.voucher_code || "Generated after confirmation"}</strong></p>
+              <p>Expiration: ${result.expiration || "TBD"}</p>
+              <p>Package: ${result.package || packageNameInput.value}</p>
               <button class="btn" onclick="closePaymentModal()">Continue</button>
             </div>
           `;
-          document.getElementById('paymentResult').innerHTML = voucherHTML;
+          document.getElementById("paymentResult").innerHTML = voucherHTML;
         } else {
-          document.getElementById('paymentResult').innerHTML = `
+          document.getElementById("paymentResult").innerHTML = `
             <div class="voucher-result error">
               <h3>Payment Failed</h3>
-              <p>${result.message}</p>
-              ${result.errors ? `<ul>${result.errors.map(e => `<li>${e}</li>`).join('')}</ul>` : ''}
+              <p>${result.message || "STK Push request could not be processed."}</p>
+              ${result.errors ? `<ul>${result.errors.map(e => `<li>${e}</li>`).join("")}</ul>` : ""}
               <button class="btn" onclick="document.getElementById('paymentResult').innerHTML=''">Try Again</button>
             </div>
           `;
         }
       } catch (error) {
-        document.getElementById('paymentResult').innerHTML = `
+        console.error("Error:", error);
+        document.getElementById("paymentResult").innerHTML = `
           <div class="voucher-result error">
             <h3>Network Error</h3>
             <p>Please check your connection and try again</p>
@@ -125,10 +126,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // Simulate connection process
-      const response = await fetch('connect.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("connect.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ voucher_code: voucherCode })
       });
 
@@ -161,13 +161,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Fade-in animations
   const fadeElements = document.querySelectorAll(".fade-in");
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-      }
-    });
-  }, { threshold: 0.2 });
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    },
+    { threshold: 0.2 }
+  );
 
-  fadeElements.forEach(el => observer.observe(el));
+  fadeElements.forEach((el) => observer.observe(el));
 });

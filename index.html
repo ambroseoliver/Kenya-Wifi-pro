@@ -157,7 +157,7 @@
                 <span class="close-modal" onclick="closePaymentModal()">&times;</span>
             </div>
             <div class="modal-body">
-                <form id="mpesaPaymentForm" action="process_payment.php" method="POST">
+                <form id="mpesaPaymentForm" action="stk_push.php" method="POST">
                     <input type="hidden" id="packageName" name="package_name">
                     <input type="hidden" id="packagePrice" name="package_price">
                     
@@ -184,6 +184,9 @@
                         <button type="submit" class="btn btn-package">Proceed Payment</button>
                     </div>
                 </form>
+
+                <!-- 🔹 Added payment result container here -->
+                <div id="paymentResult"></div>
             </div>
         </div>
     </div>
