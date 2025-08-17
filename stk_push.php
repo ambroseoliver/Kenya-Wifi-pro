@@ -4,10 +4,10 @@
 require_once __DIR__ . '/db.php'; // include DB connection
 
 // Safaricom Daraja credentials
-$consumerKey    = "YOUR_CONSUMER_KEY";      // replace with your actual Consumer Key
-$consumerSecret = "YOUR_CONSUMER_SECRET";   // replace with your actual Consumer Secret
-$businessShortCode = "174379";              // replace with your Paybill or Till number
-$passkey        = "YOUR_PASSKEY";           // replace with your Daraja passkey
+$consumerKey    = "gwKKdswVypVck5ikj0UYQCHVczXPfS22c5gOHWJUUrTlf6Gn";      // replace with your actual Consumer Key
+$consumerSecret = "kHrEP4il1pXobIzTAVPc0StApKPOhmaGa986qW4sRwJoxdAGVYFHJ6o4PzaydYko";   // replace with your actual Consumer Secret
+$businessShortCode = "5824516";              // replace with your Paybill or Till number
+$passkey        = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";           // replace with your Daraja passkey
 $callbackUrl    = "https://yourdomain.com/php/callback.php"; // update to your live callback URL
 
 // Step 1: Get JSON input from frontend
